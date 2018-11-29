@@ -99,6 +99,8 @@ def train(model, optim, db):
 		eval_loss /= batch_count
 		accuracy = float(correct) / len(eval_loader.dataset)
 
+		with open('one_hot.dat', 'a+') as file:
+			file.write(str(accuracy)+"\n")
 		print('\nEval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
 			eval_loss, correct, len(eval_loader.dataset),
 			accuracy))					
