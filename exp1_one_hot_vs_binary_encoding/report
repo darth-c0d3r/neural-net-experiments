@@ -1,0 +1,31 @@
+This simple experiment compares the results of using binary encoding in the output layer against
+the one-hot encoding that is used in most neural networks for classification tasks. In the binary
+encoding case, we only have 4 neurons in the output layer and if the value of a neuron is greater 
+than or equal to 0.5, it is considered as 1, else it is considered as 0. This way we get a 4-bit
+pattern which can be mapped onto integers.
+
+Why use binary encoding?
+The only reason I can see to use binary encoding over one-hot encoding is efficiency. Usually,
+fully connected layers are the primary reason behind the inefficiency of Neural Networks as
+compared to, say, Convolution Layers. So, using log(n) neurons instead of n neurons in the output
+layer will definitely lead to some improvement in performance.
+
+Does it work?
+As can be seen from the graph, no. The accuracy of the model using binary encoding is about 1.2%
+lesser than that of the model using one hot encoding.
+
+Why though?
+I can see two reasons for it to not work.
+
+1. Taking the value greater than 0.5 to be one and less than 0.5 to be 0 in binary encoding is less 
+accurate in some sense than interprating the values as probabilities in one-hot and taking the one
+with highest value as the answer. 
+
+2. The second reason is more fundamental to how neural networks work. The firing of a neuron usually
+corresponds to some pattern in the input. So in the one-hot case, we can easily interpret the firing
+of an output neuron to correspond to the presence of the digit associated with it. However, it becomes
+difficult to interpret in the binary encoding. In this case, more than one neurons are expected to
+fire for each input. So a neuron can be expected to fire for two (or more) inputs which do not necessarily
+have any such pattern in common. This method assumes inputs of two arbitrary classes to have such common
+patterns which is not necessarily the case. There can exist such mappings that can give better results 
+than the other but finding such mapping is not trivial / intuitive, at least not yet.
