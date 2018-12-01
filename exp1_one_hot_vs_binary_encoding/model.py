@@ -10,7 +10,7 @@ class fc_net(nn.Module):
 	def __init__(self, size, f_c, output_size):
 		super(fc_net, self).__init__()
 		
-		self.input_size = size*size
+		self.input_size = size
 
 		# fully connected layers
 		f_c = [self.input_size] + f_c

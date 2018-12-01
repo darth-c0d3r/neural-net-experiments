@@ -13,7 +13,7 @@ epochs = 50
 report_every = 64
 fc = [256]
 size_output = 10 # ceil(log(10))
-size = 28
+size = 28*28
 
 # GPU related info
 cuda = 1

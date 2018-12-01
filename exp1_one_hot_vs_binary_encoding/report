@@ -29,3 +29,9 @@ fire for each input. So a neuron can be expected to fire for two (or more) input
 have any such pattern in common. This method assumes inputs of two arbitrary classes to have such common
 patterns which is not necessarily the case. There can exist such mappings that can give better results 
 than the other but finding such mapping is not trivial / intuitive, at least not yet.
+
+In train_joined.py, I have added an extra layer of 4 neurons after a layer of 10 neurons and separately
+trained the outputs at both layers. After training, the layer with 4 neurons would learn the mapping
+used in the dataset.
+
+Point to ponder: Can we extend this framework to learn the optimal mapping?
