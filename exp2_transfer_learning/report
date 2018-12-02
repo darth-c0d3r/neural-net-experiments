@@ -1,0 +1,19 @@
+BEFORE STARTING:
+The aim of this simple experiment is to try and implement transfer learning
+by first training a network to predict the presence or absence of object A
+in the image and then keep parts of this network fixed and retrain the
+rest of the network to predict the same for object B. My aim is to get a
+basic idea of how much of the network is required to be retrained and with
+how much lesser data can we get a similar performance. My initial guess
+before starting the experiment is that results are going to be dissapointing
+if objects A and B are not much similar whereas they will be much better
+if the objects are somehow similar where the notion of similarity is somewhat
+unclear to me too. Let's hope that the network performs better than my
+expectation. 
+
+DATASETS:
+I plan to use the CIFAR10 dataset. It has 10 classes. As "Object A", I will
+use any 5 classes and as for "Object B", I will use the remaining 5 classes.
+
+REFERENCES:
+Transfer Learning Refresher: https://towardsdatascience.com/transfer-learning-946518f95666

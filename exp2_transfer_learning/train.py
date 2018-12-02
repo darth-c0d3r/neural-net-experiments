@@ -4,42 +4,48 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision # for data
-import model
+from model import SimpleConvNet
 import numpy as np
+import PIL
+
+def display_sample_image(db, set, index):
+	trans1 = torchvision.transforms.ToPILImage()
+	img = output_image = trans1(db[set][index][0])
+	img.show()
 
 # hyper-parameters
-batch_size = 128
+batch_size = 1000
 epochs = 50
-report_every = 64
+report_every = 10
+conv = [3,16,32,64]
 fc = [256]
-size_output = 10 # ceil(log(10))
-size = 28*28
+n_classes = 10
+dropout_rate = 0.2
+size = 32 # update
 
 # GPU related info
 cuda = 1
-gpu_id = 0
-# device = torch.device("cuda:"+str(gpu_id) if torch.cuda.is_available() and cuda == 1 else "cpu")
 device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cpu") # default gpu
 print("Device:", device)
 
 # return normalized dataset divided into two sets
 def prepare_db():
-	train_dataset = torchvision.datasets.MNIST('./data/mnist', train=True, download=True,
+	train_dataset = torchvision.datasets.CIFAR10('./data/cifar10', train=True, download=True,
 											   transform=torchvision.transforms.Compose([
 												   torchvision.transforms.ToTensor(),
-												   torchvision.transforms.Normalize((0.1307,), (0.3081,))
+												   # torchvision.transforms.Normalize((0.1307,), (0.3081,))
 											   ]))
 
-	eval_dataset = torchvision.datasets.MNIST('./data/mnist', train=False, download=True,
+	eval_dataset = torchvision.datasets.CIFAR10('./data/cifar10', train=False, download=True,
 											   transform=torchvision.transforms.Compose([
 												   torchvision.transforms.ToTensor(),
-												   torchvision.transforms.Normalize((0.1307,), (0.3081,))
+												   # torchvision.transforms.Normalize((0.1307,), (0.3081,))
 											   ]))
 	return {'train':train_dataset,'eval':eval_dataset}
 
-model = model.fc_net(size, fc, size_output).to(device)
-criterion = nn.MSELoss().to(device)
-# optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+model = SimpleConvNet(size, conv, fc, n_classes, dropout_rate).to(device)
+model.my_init(0.0, 0.01)
+criterion = nn.CrossEntropyLoss().to(device)
 optimizer = optim.Adagrad(model.parameters(), lr=0.01)
 
 def train(model, optim, db):
@@ -52,25 +58,18 @@ def train(model, optim, db):
 		model.train()
 		for batch_idx, (data, target) in enumerate(train_loader):
 
-			target = target.numpy()
-			tgx = np.zeros((len(target), size_output))
-			idx = [(i, target[i]) for i in range(len(target))]
-			for i in idx:
-				tgx[i]=1.0
-			target = torch.tensor(tgx)
-
 			data, target = Variable(data.to(device)), Variable((target.float()).to(device))
 			optimizer.zero_grad()
 			output = model(data)
-			loss = criterion(output,target)
+			loss = criterion(output,target.long())
+			# print(output.size())
 			pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-			target = target.data.max(1, keepdim=True)[1]
-			correct = pred.eq(target.data.view_as(pred)).cpu().sum()
+			correct = pred.eq(target.data.view_as(pred).long()).cpu().sum()
 			loss.backward()
 			optimizer.step()
 
 			if batch_idx % report_every == 0:
-				print('Train Epoch: {} [{}/{} ({:.0f}%)] Loss: {:.6f}, Accuracy: {}/{} ({:.6f})'.format(
+				print('Train Epoch: {} [{}/{} ({:.0f}%)]  Loss: {:.6f}, Accuracy: {}/{} ({:.6f})'.format(
 					epoch, batch_idx * len(data), len(train_loader.dataset),
 					100.0 * batch_idx / len(train_loader), loss.item(), correct, len(data), float(correct)/float(len(data))))
 
@@ -84,33 +83,28 @@ def train(model, optim, db):
 		with torch.no_grad():
 			for data, target in eval_loader:
 
-				target = target.numpy()
-				tgx = np.zeros((len(target), size_output))
-				idx = [(i, target[i]) for i in range(len(target))]
-				for i in idx:
-					tgx[i]=1.0
-				target = torch.tensor(tgx)
-
 				data, target = Variable(data.to(device)), Variable((target.float()).to(device))
 				output = model(data)
-				eval_loss += criterion(output, target).item() # sum up batch loss
+				eval_loss += criterion(output, target.long()).item() # sum up batch loss
 				pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-				target = target.data.max(1, keepdim=True)[1]
-				correct += pred.eq(target.data.view_as(pred)).cpu().sum()
+				correct += pred.eq(target.data.view_as(pred).long()).cpu().sum()
 				batch_count += 1
 
 		eval_loss /= batch_count
 		accuracy = float(correct) / len(eval_loader.dataset)
 
-		with open('results/one_hot.dat', 'a+') as file:
-			file.write(str(accuracy)+"\n")
+		# with open('results/one_hot.dat', 'a+') as file:
+		# 	file.write(str(accuracy)+"\n")
 		print('Eval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
 			eval_loss, correct, len(eval_loader.dataset),
 			accuracy))					
 
 def main():
 	db = prepare_db()
-	# print(db['train'][0][1])
+
+	# display_sample_image(db, 'train', 0)
+	# print(len(db['train']))
+
 	train(model, optim, db)
 
 

@@ -166,10 +166,10 @@ def train(model_10, model_4, optimizer_10, optimizer_4, db):
 		accuracy_10 = float(correct_10) / len(eval_loader.dataset)
 		accuracy_4 = float(correct_4) / len(eval_loader.dataset)
 
-		with open('one_hot_joined.dat', 'a+') as file:
+		with open('results/one_hot_joined.dat', 'a+') as file:
 			file.write(str(accuracy_10)+"\n")
 
-		with open('binary_encoding_joined.dat', 'a+') as file:
+		with open('results/binary_encoding_joined.dat', 'a+') as file:
 			file.write(str(accuracy_4)+"\n")
 
 		print('\nEval set [10]: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(

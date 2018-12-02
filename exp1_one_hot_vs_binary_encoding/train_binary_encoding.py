@@ -129,7 +129,7 @@ def train(model, optim, db):
 		eval_loss /= batch_count
 		accuracy = float(correct) / len(eval_loader.dataset)
 
-		with open('binary_encoding.dat', 'a+') as file:
+		with open('results/binary_encoding.dat', 'a+') as file:
 			file.write(str(accuracy)+"\n")
 
 		print('\nEval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
