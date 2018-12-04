@@ -15,5 +15,24 @@ DATASETS:
 I plan to use the CIFAR10 dataset. It has 10 classes. As "Object A", I will
 use any 5 classes and as for "Object B", I will use the remaining 5 classes.
 
+BASE MODEL:
+The best models for CIFAR10 report accuracies of greater than 90%. But since the
+aim of this experiment is not achieving higher accuracies, I have used a simple
+neural network that gives an accuracy of about 74%.
+After dividing the dataset, db_left contains images with targets 0-4 and db_right
+contains classes from 5-9. The same model now gives an accuracy of around 82% for
+both the split datasets.
+
+OBSERVATIONS:
+Let's for a moment just go crazy and use the model trained on the left database
+and see the results it gives for the right database. If everything goes well, the
+accuracy should be less 20% (nothing better than random). Okay, I got an accuracy 
+of around 6.5%, which is a less than what I expected but then again, hey, it's not the data
+the model was made for. Let's try to redo this once more to make sure it was not just
+an off chance and then move forward. Okay, the second time too I got similar accuracy.
+Okay, so now let's get started with the actual experimentation.
+
+Let's only train the output layer keeping rest of the model frozen.
+
 REFERENCES:
 Transfer Learning Refresher: https://towardsdatascience.com/transfer-learning-946518f95666

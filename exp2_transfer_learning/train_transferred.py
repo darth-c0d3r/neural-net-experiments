@@ -24,10 +24,27 @@ cuda = 1
 device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cpu") # default gpu
 print("Device:", device)
 
-model = SimpleConvNet(size, conv, fc, n_classes, dropout_rate).to(device)
-model.my_init(0.0, 0.01)
+if(torch.cuda.is_available() == False):
+	model = torch.load("convnet_left.pt", map_location='cpu').to(device)
+else:
+	model = torch.load("convnet_left.pt").to(device)
+
 criterion = nn.CrossEntropyLoss().to(device)
 optimizer = optim.Adagrad(model.parameters(), lr=0.01)
+
+def freeze_layers(model):
+
+	for conv_layer in model.conv_layers:
+		for params in conv_layer.parameters():
+			params.requires_grad = False
+
+	for fc_layer in model.fc_layers:
+		for params in fc_layer.parameters():
+			params.requires_grad = False
+
+	for batchnorm_layer in model.batchnorm_layers:
+		for params in batchnorm_layer.parameters():
+			params.requires_grad = False
 
 def train(model, optim, db):
 
@@ -74,20 +91,17 @@ def train(model, optim, db):
 		eval_loss /= batch_count
 		accuracy = float(correct) / len(eval_loader.dataset)
 
-		with open('results/base_model_dataright.dat', 'a+') as file:
-			file.write(str(accuracy)+"\n")
 		print('Eval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
 			eval_loss, correct, len(eval_loader.dataset),
 			accuracy))					
 	torch.save(model, 'convnet_left.pt')
 
 def main():
-
 	db = prepare_db()
 	db_l, db_r = split_database(db)
 	print("Database split done!")
-	train(model, optimizer, db_l)
-
+	freeze_layers(model)
+	train(model, optimizer, db_r)
 
 if __name__ == '__main__':
 	main()
