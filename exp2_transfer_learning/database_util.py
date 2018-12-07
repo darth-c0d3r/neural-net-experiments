@@ -17,7 +17,7 @@ def prepare_db():
 											   ]))
 	return {'train':train_dataset,'eval':eval_dataset}
 
-def split_database(db):
+def split_database(db, frac):
 	db_l_train_data = []
 	db_l_train_target = []
 	db_r_train_data = []
@@ -26,8 +26,6 @@ def split_database(db):
 	db_l_test_target = []
 	db_r_test_data = []
 	db_r_test_target = []
-
-
 
 	for data, target in db['train']:
 		if target < 5:
@@ -46,10 +44,12 @@ def split_database(db):
 			db_r_test_data += [data]
 			db_r_test_target += [torch.tensor(target-5)]
 
-	tdb_l_train_data = torch.stack([point for point in db_l_train_data])
-	tdb_r_train_data = torch.stack([point for point in db_r_train_data])
-	tdb_l_train_target = torch.stack([point for point in db_l_train_target])
-	tdb_r_train_target = torch.stack([point for point in db_r_train_target])
+	frac_train = int(frac * len(db_l_train_data))
+
+	tdb_l_train_data = torch.stack([point for point in db_l_train_data[:frac_train]])
+	tdb_r_train_data = torch.stack([point for point in db_r_train_data[:frac_train]])
+	tdb_l_train_target = torch.stack([point for point in db_l_train_target[:frac_train]])
+	tdb_r_train_target = torch.stack([point for point in db_r_train_target[:frac_train]])
 	tdb_l_test_data = torch.stack([point for point in db_l_test_data])
 	tdb_r_test_data = torch.stack([point for point in db_r_test_data])
 	tdb_l_test_target = torch.stack([point for point in db_l_test_target])

@@ -14,9 +14,9 @@ device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cp
 print("Device:", device)
 
 db = prepare_db()
-db_l, db_r = split_database(db)
+db_l, db_r = split_database(db, 0.75)
 
-model = torch.load("convnet_left.pt", map_location='cpu').to(device)
+model = torch.load("convnet_right.pt", map_location='cpu').to(device)
 model.eval()
 correct = 0
 eval_loader = torch.utils.data.DataLoader(db_l['eval'], batch_size=len(db_l['eval']), shuffle=True)

@@ -22,7 +22,7 @@ class SimpleConvNet(nn.Module):
 
 		for i in range(len(conv)-1):
 			self.conv_layers.append(nn.Conv2d(conv[i], conv[i+1], kernel_size=self.c_kernel_size, padding=self.c_padding))
-			self.dropout_layers.append(nn.Dropout2d(self.dropout_rate))
+			self.dropout_layers.append(nn.Dropout2d(self.dropout_rate/2))
 			self.batchnorm_layers.append(nn.BatchNorm2d(conv[i+1]))
 			size = size + 2*self.c_padding - self.c_kernel_size + 1
 			size = int(size/self.p_kernel_size)
@@ -30,7 +30,7 @@ class SimpleConvNet(nn.Module):
 		self.pool = nn.MaxPool2d(kernel_size=self.p_kernel_size)
 
 		self.size = size*size*conv[-1]
-
+		
 		# fully connected layers
 		fc = [self.size] + fc
 		self.fc_layers = nn.ModuleList()

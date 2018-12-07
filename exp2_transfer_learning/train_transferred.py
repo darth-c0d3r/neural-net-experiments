@@ -11,12 +11,12 @@ from database_util import *
 
 # hyper-parameters
 batch_size = 100
-epochs = 100
-report_every = 50
+epochs = 150
+report_every = 10
 conv = [3,16,32,64]
 fc = [256]
 n_classes = 5
-dropout_rate = 0.2
+dropout_rate = 0.5
 size = 32 # update
 
 # GPU related info
@@ -25,26 +25,29 @@ device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cp
 print("Device:", device)
 
 if(torch.cuda.is_available() == False):
-	model = torch.load("convnet_left.pt", map_location='cpu').to(device)
+	model = torch.load("convnet_right.pt", map_location='cpu').to(device)
 else:
-	model = torch.load("convnet_left.pt").to(device)
+	model = torch.load("convnet_right.pt").to(device)
 
 criterion = nn.CrossEntropyLoss().to(device)
-optimizer = optim.Adagrad(model.parameters(), lr=0.01)
+optimizer = optim.Adagrad(model.parameters(), lr=0.005)
 
 def freeze_layers(model):
 
-	for conv_layer in model.conv_layers:
+	for conv_layer in model.conv_layers[:-3]:
 		for params in conv_layer.parameters():
 			params.requires_grad = False
+		print('c')
 
-	for fc_layer in model.fc_layers:
+	for fc_layer in model.fc_layers[:-1]:
 		for params in fc_layer.parameters():
 			params.requires_grad = False
+		print('fc')
 
-	for batchnorm_layer in model.batchnorm_layers:
+	for batchnorm_layer in model.batchnorm_layers[:-4]:
 		for params in batchnorm_layer.parameters():
 			params.requires_grad = False
+		print('bn')
 
 def train(model, optim, db):
 
@@ -88,20 +91,21 @@ def train(model, optim, db):
 				correct += pred.eq(target.data.view_as(pred).long()).cpu().sum()
 				batch_count += 1
 
+
 		eval_loss /= batch_count
 		accuracy = float(correct) / len(eval_loader.dataset)
 
 		print('Eval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
 			eval_loss, correct, len(eval_loader.dataset),
-			accuracy))					
-	torch.save(model, 'convnet_left.pt')
+			accuracy))		
 
 def main():
 	db = prepare_db()
-	db_l, db_r = split_database(db)
+	db_l, db_r = split_database(db,0.10)
 	print("Database split done!")
 	freeze_layers(model)
-	train(model, optimizer, db_r)
+	train(model, optimizer, db_l)
+
 
 if __name__ == '__main__':
 	main()

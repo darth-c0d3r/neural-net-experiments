@@ -16,7 +16,7 @@ report_every = 50
 conv = [3,16,32,64]
 fc = [256]
 n_classes = 5
-dropout_rate = 0.2
+dropout_rate = 0.5
 size = 32 # update
 
 # GPU related info
@@ -27,7 +27,7 @@ print("Device:", device)
 model = SimpleConvNet(size, conv, fc, n_classes, dropout_rate).to(device)
 model.my_init(0.0, 0.01)
 criterion = nn.CrossEntropyLoss().to(device)
-optimizer = optim.Adagrad(model.parameters(), lr=0.01)
+optimizer = optim.Adagrad(model.parameters(), lr=0.005)
 
 def train(model, optim, db):
 
@@ -79,14 +79,14 @@ def train(model, optim, db):
 		print('Eval set: Average loss: {:.4f}, Accuracy: {}/{} ({:.6f})\n'.format(
 			eval_loss, correct, len(eval_loader.dataset),
 			accuracy))					
-	torch.save(model, 'convnet_left.pt')
+	torch.save(model, 'convnet_right.pt')
 
 def main():
 
 	db = prepare_db()
 	db_l, db_r = split_database(db)
 	print("Database split done!")
-	train(model, optimizer, db_l)
+	train(model, optimizer, db_r)
 
 
 if __name__ == '__main__':
