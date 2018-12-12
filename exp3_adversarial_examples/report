@@ -1,0 +1,21 @@
+The aim of this experiment is to learn and see how to generate adversarial examples
+for a given neural network and see how the examples generated on one network
+work on other networks (black-box attacks).
+
+Aims:
+- generate examples that cause network to misclassify
+- generate examples that cause network to misclassify and also look like real images
+- try the above 2 cases on other network
+
+We will use two networks, one will be a fully connected network and
+the other will be a convolutional network with a fully connected output layer.
+
+The fully connected network has the following layers: 128, 64, 32, 10(output)
+Accuracy at last epoch: 96.6600%
+The convolutional network has the following layers: 16, 32, 64, 10(output, fc)
+Accuracy at last epoch: 99.0700%
+
+
+References:
+https://ml.berkeley.edu/blog/2018/01/10/adversarial-examples/
+https://pytorch.org/tutorials/beginner/fgsm_tutorial.html
