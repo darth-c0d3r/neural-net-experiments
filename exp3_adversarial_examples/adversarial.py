@@ -14,7 +14,7 @@ epochs = 10000
 report_every = epochs/10 
 learning_rate = 10.0
 num_sched_lr = 3
-num_trials = 5
+num_trials = 2
 
 size_output = 10
 size_input = 28
@@ -93,7 +93,7 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 		return
 
 	lr_orig = lr
-	lambda_img = 10
+	lambda_img = 5.0
 	criterion = nn.MSELoss().to(device)
 
 	# having a well centered gaussian stops the output gaussian from saturating early
@@ -128,7 +128,7 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 		print("Success. " + str(label))
 	else:
 		print("Fail. Retry. " + str(label))
-		return generate_non_targeted(model, lr_orig, label, n_try-1)
+		return generate_targeted(model, lr_orig, label, n_try-1, target_image, target_label)
 
 	data = data.view(1,size_input,size_input).detach().cpu()
 	trans = torchvision.transforms.ToPILImage()
@@ -138,7 +138,8 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 
 def main():
 	db = prepare_db()
-	for label in range(1):
+	# print(db['eval'][5][1])
+	for label in [1,2,6,8,9]:
 		# generate_non_targeted(model, learning_rate, label, num_trials)
 		generate_targeted(model, learning_rate, label, num_trials, db['eval'][0][0].to(device), db['eval'][0][1].item())
 
