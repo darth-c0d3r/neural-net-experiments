@@ -63,7 +63,7 @@ accuracy keeps shifting towards the model in which more layers are kept frozen. 
 
 Also, the more data we use, the better accuracy we get for a given model which means that more data almost always beats other optimizations and has more increasing returns.
 
-REFERENCES:
+#### References
 Transfer Learning Refresher: https://towardsdatascience.com/transfer-learning-946518f95666
 
 <!-- plot 'one_hot.dat' with linespoints , 'binary_encoding.dat' with linespoints

@@ -1,46 +1,62 @@
-The aim of this experiment is to learn and see how to generate adversarial examples
-for a given neural network and see how the examples generated on one network
-work on other networks (black-box attacks).
+## ADVERSARIAL EXAMPLES
 
-Aims:
-- generate examples that cause network to misclassify
-- generate examples that cause network to misclassify and also look like real images
-- try the above 2 cases on other network
+#### Aim
+The aim of this experiment is to learn and see how to generate adversarial examples for a given neural network (white-box attacks) and see how the examples generated on one network work on other networks (black-box attacks). Specifically, following is the breakdown of the task:
+- Generate examples that cause network to mis-classify
+- Generate examples that cause network to mis-classify and also look like real images
+- Try the above 2 cases on another network (black-box attack)
 
+#### Neural Network Models
 We will use two networks, one will be a fully connected network and
 the other will be a convolutional network with a fully connected output layer.
 
 The fully connected network has the following layers: 128, 64, 32, 10(output)
-Accuracy at last epoch: 96.6600%
+
+**Accuracy at last epoch: 96.6600%**
+
 The convolutional network has the following layers: 16, 32, 64, 10(output, fc)
-Accuracy at last epoch: 99.0700%
 
-===================================================================================================================
-NON-TARGETED GENERATION
--------------------------------------------------------------------------------------------------------------------
+**Accuracy at last epoch: 99.0700%**
 
-For the conv net, the average scores for each class on eval set is:
+Also, it must be noted that the output is coming from a sigmoid layer (instead of a softmax layer), so the output is not to be interpreted as probability but simply as a score.
+
+### Non-Targeted Generation
+
+#### Performance of the original Dataset
+
+For the conv net, the average scores for each class on eval set are:
+
+<img src="results/orig0.png" alt="Average Scores for Original 0" width="450"/>
+<img src="results/orig1.png" alt="Average Scores for Original 1" width="450"/>
+<img src="results/orig2.png" alt="Average Scores for Original 2" width="450"/>
+<img src="results/orig3.png" alt="Average Scores for Original 3" width="450"/>
+<img src="results/orig4.png" alt="Average Scores for Original 4" width="450"/>
+<img src="results/orig5.png" alt="Average Scores for Original 5" width="450"/>
+<img src="results/orig6.png" alt="Average Scores for Original 6" width="450"/>
+<img src="results/orig7.png" alt="Average Scores for Original 7" width="450"/>
+<img src="results/orig8.png" alt="Average Scores for Original 8" width="450"/>
+<img src="results/orig9.png" alt="Average Scores for Original 9" width="450"/>
+
 
 0 [0.99827651 0.00107352 0.19915122 0.00230315 0.02037038 0.03150682 0.12332517 0.00636423 0.04749502 0.11014814]
+
 1 [0.01130811 0.99803437 0.08741341 0.00664729 0.43187734 0.00341541 0.04080755 0.27348676 0.2808405  0.02168577]
-2 [3.45153704e-02 2.04207668e-01 9.99606821e-01 4.37718560e-01
- 1.64276470e-02 3.87474374e-04 4.28899294e-03 4.68803005e-01
- 4.02274479e-01 3.63151769e-03]
-3 [3.93725270e-03 2.71125065e-03 1.12034295e-01 9.98407567e-01
- 6.51221011e-04 3.09294434e-01 4.59893711e-06 5.02456464e-02
- 3.36546376e-01 1.97216732e-01]
+
+2 [3.45153704e-02 2.04207668e-01 9.99606821e-01 4.37718560e-01 1.64276470e-02 3.87474374e-04 4.28899294e-03 4.68803005e-01 4.02274479e-01 3.63151769e-03]
+
+3 [3.93725270e-03 2.71125065e-03 1.12034295e-01 9.98407567e-01 6.51221011e-04 3.09294434e-01 4.59893711e-06 5.02456464e-02 3.36546376e-01 1.97216732e-01]
+
 4 [0.0088929  0.05708734 0.03471481 0.00372155 0.99945771 0.00245556 0.02462172 0.35727438 0.17640862 0.30915913]
+
 5 [0.01478805 0.00691398 0.00215056 0.53942348 0.00227824 0.99811810 0.0480153  0.0031307  0.57343663 0.36211180]
-6 [3.28724185e-01 1.26901875e-02 1.91120917e-02 1.36320247e-03
- 2.58083709e-01 2.84733839e-01 9.95972034e-01 4.29429949e-04
- 2.84621600e-01 2.23365698e-03]
-7 [6.38533036e-03 2.98667008e-01 5.13740084e-01 4.31665474e-01
- 5.56895785e-02 8.90392150e-03 3.74745462e-07 9.99360495e-01
- 1.30370445e-01 5.61783650e-01]
+
+6 [3.28724185e-01 1.26901875e-02 1.91120917e-02 1.36320247e-03 2.58083709e-01 2.84733839e-01 9.95972034e-01 4.29429949e-04 2.84621600e-01 2.23365698e-03]
+
+7 [6.38533036e-03 2.98667008e-01 5.13740084e-01 4.31665474e-01 5.56895785e-02 8.90392150e-03 3.74745462e-07 9.99360495e-01 1.30370445e-01 5.61783650e-01]
+
 8 [0.06039144 0.00193241 0.27119904 0.31153516 0.01770592 0.14298959 0.05586447 0.01831253 0.99795999 0.11259448]
-9 [8.61236427e-03 7.16922607e-03 8.80291929e-03 2.06367847e-01
- 5.48089553e-01 6.43413048e-02 2.90688731e-04 3.26558079e-01
- 4.62640403e-01 9.97027403e-01]
+
+9 [8.61236427e-03 7.16922607e-03 8.80291929e-03 2.06367847e-01 5.48089553e-01 6.43413048e-02 2.90688731e-04 3.26558079e-01 4.62640403e-01 9.97027403e-01]
 
 -------------------------------------------------------------------------------------------------------------------
 Now the scores for the adversarial examples created by our network for the convnet (white-box)
