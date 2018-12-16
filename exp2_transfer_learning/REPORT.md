@@ -46,6 +46,10 @@ Model Retrained | Dataset Size | Accuracy
 4 (2 conv) | 10% | 0.700600
 5 (retrained all) | 10% | 0.695200
 
+The readings in the above table are plotted below. The name of the curve indicates the
+percentage dataset used. The x-axis indicates the amount of network retrained and
+y-axis indicates the accuracy.
+
 ![Experiment2 Results](results/result.png)
 <!-- <img src="results/result.png" alt="Experiment2 Results" width="450"/> -->
 
