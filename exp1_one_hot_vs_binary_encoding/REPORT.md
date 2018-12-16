@@ -7,8 +7,7 @@ The only reason I can see to use binary encoding over one-hot encoding is effici
 
 #### Does it work?
 
-<!-- ![Experiment1 Results](results/result.png) -->
-<img src="results/result.png" alt="Experiment1 Results" width="400"/>
+<img src="results/result.png" alt="Experiment1 Results" width="450"/>
 
 As can be seen from the graph (which shows the accuracy vs epoch for the two models), not completely. The accuracy of the model using binary encoding is about 1.2% lesser than that of the model using one hot encoding. Although this might not seem like a huge difference, we must keep in mind, that classifying MNIST dataset is a relatively simple task and this degradation can be much more severe in more complicated tasks. 
 
