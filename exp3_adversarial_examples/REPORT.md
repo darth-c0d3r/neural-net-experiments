@@ -44,19 +44,44 @@ Now the scores for the adversarial examples created by our network for the convn
 
 <p float="left">
 	<img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
-	<img src="adversarial_outputs_conv/non_targeted/0.jpg" alt="Fake 0" width="200" style="margin-bottom:50"/>
+	<img src="adversarial_outputs_conv/non_targeted/0.jpg" alt="Fake 0" width="200"/>
 </p>
-
-<img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
-<img src="results/fake1.png" alt="White-Box score for fake 1" width="450"/>
-<img src="results/fake2.png" alt="White-Box score for fake 2" width="450"/>
-<img src="results/fake3.png" alt="White-Box score for fake 3" width="450"/>
-<img src="results/fake4.png" alt="White-Box score for fake 4" width="450"/>
-<img src="results/fake5.png" alt="White-Box score for fake 5" width="450"/>
-<img src="results/fake6.png" alt="White-Box score for fake 6" width="450"/>
-<img src="results/fake7.png" alt="White-Box score for fake 7" width="450"/>
-<img src="results/fake8.png" alt="White-Box score for fake 8" width="450"/>
-<img src="results/fake9.png" alt="White-Box score for fake 9" width="450"/> -->
+<p float="left">
+	<img src="results/fake1.png" alt="White-Box score for fake 1" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/1.jpg" alt="Fake 1" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake2.png" alt="White-Box score for fake 2" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/2.jpg" alt="Fake 2" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake3.png" alt="White-Box score for fake 3" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/3.jpg" alt="Fake 3" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake4.png" alt="White-Box score for fake 4" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/4.jpg" alt="Fake 4" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake5.png" alt="White-Box score for fake 5" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/5.jpg" alt="Fake 5" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake6.png" alt="White-Box score for fake 6" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/6.jpg" alt="Fake 6" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake7.png" alt="White-Box score for fake 7" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/7.jpg" alt="Fake 7" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake8.png" alt="White-Box score for fake 8" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/8.jpg" alt="Fake 8" width="200"/>
+</p>
+<p float="left">
+	<img src="results/fake9.png" alt="White-Box score for fake 9" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/9.jpg" alt="Fake 9" width="200"/>
+</p>
 
 As we can see above, we have created images which successfully fool the network.
 
