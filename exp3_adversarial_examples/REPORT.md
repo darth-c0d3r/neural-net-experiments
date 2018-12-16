@@ -42,17 +42,11 @@ What we can see from above graphs is that the score for correct class is always 
 #### Ouput on thr generated images (White-Box)
 Now the scores for the adversarial examples created by our network for the convnet (white-box)
 
+<p float="left">
+	<img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
+	<img src="adversarial_outputs_conv/non_targeted/0.jpg" alt="Fake 0" width="200"/>
+</p>
 
-(setq markdown-css-paths '("results/style.css"))
-
-<div class="row">
-  <div class="column">
-    <img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
-  </div>
-  <div class="column">
-    <img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
-  </div>
-</div>
 <img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
 <img src="results/fake1.png" alt="White-Box score for fake 1" width="450"/>
 <img src="results/fake2.png" alt="White-Box score for fake 2" width="450"/>
