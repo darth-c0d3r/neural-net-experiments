@@ -44,7 +44,7 @@ Now the scores for the adversarial examples created by our network for the convn
 
 <p float="left">
 	<img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
-	<img src="adversarial_outputs_conv/non_targeted/0.jpg" alt="Fake 0" width="200" margin-bottom="50"/>
+	<img src="adversarial_outputs_conv/non_targeted/0.jpg" alt="Fake 0" width="200" style="margin-bottom:50/>
 </p>
 
 <img src="results/fake0.png" alt="White-Box score for fake 0" width="450"/>
