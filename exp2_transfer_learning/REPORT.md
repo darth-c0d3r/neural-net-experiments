@@ -2,11 +2,11 @@
 #### Introduction
 The aim of this simple experiment is to implement transfer learning by first training a network to classify a set of objects A and then keep parts of this network fixed and retrain the rest of the network to predict the same for a disjoint set of objects B. My aim is to get a basic idea of how much of the network is required to be retrained and with how much lesser data can we get a similar performance.
 
-#### Dataset:
+#### Dataset
 The dataset used is the CIFAR10 dataset. It has 10 classes. As "Set A", I will
 use any 5 classes and for "Set B", I will use the remaining 5 classes. I use the images with labels 0-4 as "left dataset" and the images with labels 5-9 as "right datset".
 
-#### Neural Network Model:
+#### Neural Network Model
 The best models for CIFAR10 report accuracies of greater than 90%. But since the aim of this experiment is not achieving higher accuracies, I have used a simple neural network that gives an accuracy of about 74% on the complete dataset. This model gives around 80% accuracy on the left dataset and 85% on the right dataset. We will use the model trained on the right dataset to check the performances on left dataset.
 
 The model I have used has 5 layers: 3 conv layers, 1 fully connected hidden layer and 1 fully connected output layer.
@@ -46,6 +46,8 @@ Model Retrained | Dataset Size | Accuracy
 4 (2 conv) | 10% | 0.700600
 5 (retrained all) | 10% | 0.695200
 
+![Experiment2 Results](results/result.png)
+<!-- <img src="results/result.png" alt="Experiment2 Results" width="450"/> -->
 
 #### Interpretation
 If we just go crazy and use the model trained on the left database and see the results it gives for the right database and if everything goes well, the
