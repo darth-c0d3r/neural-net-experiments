@@ -4,6 +4,12 @@ import torchvision
 import numpy as np
 from PIL import Image
 import os
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-m", "--model", help="Path to model")
+args = parser.parse_args()
 
 # return normalized dataset divided into two sets
 def prepare_db():
@@ -21,9 +27,9 @@ print("Device:", device)
 
 # model on which to test
 if(torch.cuda.is_available() == False):
-	model = torch.load("saved_models/model_convnet.pt", map_location='cpu').to(device)
+	model = torch.load("saved_models/"+args.model, map_location='cpu').to(device)
 else:
-	model = torch.load("saved_models/model_convnet.pt").to(device)
+	model = torch.load("saved_models/"+args.model).to(device)
 
 model.eval()
 
@@ -47,4 +53,4 @@ for (data, target) in db['eval']:
 
 for i in range(10):
 	scores[i] /= counts[i]
-	print(i, scores[i])
+	print(i, max(enumerate(scores[i]), key=lambda x: x[1])[0])

@@ -7,6 +7,12 @@ import torchvision # for data
 import model
 import numpy as np
 import sys
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-m", "--model", help="Path to model")
+args = parser.parse_args()
 
 # hyper-parameters
 batch_size = 500
@@ -35,9 +41,9 @@ def prepare_db():
 	return {'eval':eval_dataset}
 
 if(torch.cuda.is_available() == False):
-	model = torch.load("saved_models/model_convnet.pt", map_location='cpu').to(device)
+	model = torch.load("saved_models/"+args.model, map_location='cpu').to(device)
 else:
-	model = torch.load("saved_models/model_convnet.pt").to(device)
+	model = torch.load("saved_models/"+args.model).to(device)
 
 def generate_non_targeted(model, lr, label, n_try):
 
@@ -90,7 +96,7 @@ def generate_non_targeted(model, lr, label, n_try):
 
 	data.save("adversarial_outputs_conv/non_targeted/"+str(label)+".jpg")
 
-def generate_targeted(model, lr, label, n_try, target_image, target_label):
+def generate_targeted(model, lr, label, n_try, target_image, target_label, idx):
 
 	if n_try == 0: # try to generate an example n number of times
 		return
@@ -117,8 +123,8 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 		output = torch.sigmoid(model(data))
 		pred = output.max(1, keepdim=True)[1]
 
-		if i % report_every == 0 or i == epochs-1:
-			print(output.data.cpu().numpy()[0])
+		# if i % report_every == 0 or i == epochs-1:
+		# 	print(output.data.cpu().numpy()[0])
 
 		if (i + 1) % ( epochs / (num_sched_lr + 1) ) == 0 and label == pred:
 			lr /= 10.0
@@ -135,20 +141,21 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 		print("Success. " + str(label))
 	else:
 		print("Fail. Retry. " + str(label))
-		return generate_targeted(model, lr_orig, label, n_try-1, target_image, target_label)
+		return generate_targeted(model, lr_orig, label, n_try-1, target_image, target_label, idx)
 
 	data = data.view(1,size_input,size_input).detach().cpu()
 	trans = torchvision.transforms.ToPILImage()
 	data = trans(data)
 
-	data.save("adversarial_outputs_conv/targeted/"+str(target_label) + "_to_" + str(label)+".jpg")
+	data.save("adversarial_outputs_conv/targeted/"+ str(idx) + str(target_label) + "_to_" + str(label)+".jpg")
 
 def main():
 	db = prepare_db()
 	# print(db['eval'][5][1])
-	for label in range(10):
-		# generate_non_targeted(model, learning_rate, label, num_trials)
-		generate_targeted(model, learning_rate, label, num_trials, db['eval'][0][0].to(device), db['eval'][0][1].item())
+	for i in range(100):
+		for label in range(10):
+			# generate_non_targeted(model, learning_rate, label, num_trials)
+			generate_targeted(model, learning_rate, label, num_trials, db['eval'][i][0].to(device), db['eval'][i][1], i)
 
 
 if __name__ == '__main__':
