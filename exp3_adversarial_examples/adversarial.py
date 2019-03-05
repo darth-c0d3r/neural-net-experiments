@@ -48,8 +48,11 @@ def generate_non_targeted(model, lr, label, n_try):
 	criterion = nn.MSELoss().to(device)
 
 	# having a well centered gaussian stops the output gaussian from saturating early
+
 	data = torch.randn((1,1,size_input,size_input))
 	data = (data - torch.min(data)) / (torch.max(data) - torch.min(data))
+
+	# data = torch.zeros((1,1,size_input,size_input))
 	target = torch.zeros((1,size_output))
 	target[0][label] = 1
 
@@ -97,8 +100,12 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 	criterion = nn.MSELoss().to(device)
 
 	# having a well centered gaussian stops the output gaussian from saturating early
+
 	data = torch.randn((1,1,size_input,size_input))
 	data = (data - torch.min(data)) / (torch.max(data) - torch.min(data))
+
+	# data = torch.zeros((1,1,size_input,size_input))
+
 	target = torch.zeros((1,size_output))
 	target[0][label] = 1
 
@@ -139,7 +146,7 @@ def generate_targeted(model, lr, label, n_try, target_image, target_label):
 def main():
 	db = prepare_db()
 	# print(db['eval'][5][1])
-	for label in [1,2,6,8,9]:
+	for label in range(10):
 		# generate_non_targeted(model, learning_rate, label, num_trials)
 		generate_targeted(model, learning_rate, label, num_trials, db['eval'][0][0].to(device), db['eval'][0][1].item())
 

@@ -13,12 +13,12 @@ epochs = 50
 report_every = 30 # report 120/30 = 4 times per epoch
 
 # for fc net
-conv = [1]
-fc = [128,64,32]
+# conv = [1]
+# fc = [128,64,32]
 
 # for conv net 
-# conv = [1,16,32,64]
-# fc = []
+conv = [1,16,32,64]
+fc = []
 
 size_output = 10
 size = 28
@@ -96,7 +96,7 @@ def train(model, optim, db):
 			eval_loss, correct, len(eval_loader.dataset),
 			accuracy))					
 
-	torch.save(model, 'saved_models/model_fcnet.pt')
+	torch.save(model, 'saved_models/model_convnet.pt')
 
 def main():
 	db = prepare_db()
