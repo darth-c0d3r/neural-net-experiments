@@ -120,7 +120,7 @@ Score on the image generated for all targets from above image:
 
 <p float="left">
 	<img src="results/fake70.png" alt="White-Box score for fake 0" width="450"/>
-	<img src="adversarial_outputs_conv/targeted/7_to_0.jpg" alt="Targeted Fake 0" width="200"/>
+	<img src="adversarial_outputs_conv/targeted/07_to_0.jpg" alt="Targeted Fake 0" width="200"/>
 </p>
 <p float="left">
 	<img src="results/fake71.png" alt="White-Box score for fake 1" width="450"/>
